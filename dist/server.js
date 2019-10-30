@@ -9,6 +9,6 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/reactreadinglist");
 // Start the API server
 app.listen(PORT, function () {
-    console.log(` http://localhost:${PORT}!`);
+    console.log(`http://localhost:${PORT}!`);
 });
 //# sourceMappingURL=server.js.map
