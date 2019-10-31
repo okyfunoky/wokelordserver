@@ -69,12 +69,31 @@ export default class Tower {
 
     //TODO: Spread this value to all tenants
     calculateGlobalHappiness(preview: boolean){
-        let happiness = 0;
+        let globalHappinessAdjustment = 0;
+
+        this.getPopulation(preview);
+        this.areElevatorsCrowded(preview);
+        //other global happiness values go here
+
 
         if(this.ElevatorsAreCrowded){
-            happiness -= 10;
-        }
+            globalHappinessAdjustment -= 10;
+        }  
 
+        let happinessCount = 0;
+
+        //get average happiness in the tower
+        this.Floors.forEach((floor)=>{
+            floor.Rooms.forEach((room)=>{
+                room.Tenants.forEach((tenant)=>{
+                    happinessCount += tenant.currentHappiness
+                })
+            })
+        })
+
+        let happinessAverage = happinessCount/this.Population;
+        happinessAverage += globalHappinessAdjustment;
+        this.GlobalHappiness = happinessAverage;
     }
 
     calcuateMonthlyIncome(preview: boolean){

@@ -3,10 +3,12 @@ import Room from "./room";
 export default class Floor {
   Number: number;
   Rooms: Room[];
+  OccupiedSpace: number;
 
   constructor(number: number) {
     this.Number = number;
     this.Rooms = new Array<Room>();
+    this.OccupiedSpace = 0;
 
     //test method only
     for (let index = 0; index < testNames.length; index++) {

@@ -5,6 +5,7 @@ class Floor {
     constructor(number) {
         this.Number = number;
         this.Rooms = new Array();
+        this.OccupiedSpace = 0;
         //test method only
         for (let index = 0; index < testNames.length; index++) {
             const name = testNames[index];
