@@ -9,7 +9,7 @@ class Floor {
         for (let index = 0; index < testNames.length; index++) {
             const name = testNames[index];
             const type = testRoomNames[index];
-            this.Rooms.push(new room_1.default(name, type));
+            this.Rooms.push(new room_1.default(name, type, 500, 500));
         }
     }
 }

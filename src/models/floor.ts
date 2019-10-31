@@ -14,7 +14,7 @@ export default class Floor {
       const type = testRoomNames[index];
       
 
-      this.Rooms.push(new Room(name, type));
+      this.Rooms.push(new Room(name, type,500,500));
     }
   }
 }
