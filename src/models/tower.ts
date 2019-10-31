@@ -12,6 +12,11 @@ export default class Tower {
     TrackedTenants: Tenant[];
     RightElevatorShaft: ElevatorShaft;
     LeftElevatorShaft: ElevatorShaft;
+    TotalElevatorCapacity: number;
+    ElevatorsAreCrowded: boolean;
+    GlobalHappiness: number;
+    MonthsWithNoMoney: number;
+    StarLevel: number;
 
     constructor(name: string) {
         this.name = name;
@@ -20,7 +25,7 @@ export default class Tower {
         })
     }
 
-    getPopulation(){
+    getPopulation(preview: boolean){
         let population = 0;
         this.Floors.forEach(floor => {
             floor.Rooms.forEach((room)=>{
@@ -28,6 +33,80 @@ export default class Tower {
             })
         });
         this.Population = population;
+    }
+
+    getEleveatorTotalCapacity(preview: boolean){
+        let capacity = 0;
+        let rightCapacity = 0;
+        let leftCapacity = 0;
+
+        this.RightElevatorShaft.Cars.forEach((car)=>{
+            rightCapacity += car.capacity;
+        })
+
+        this.LeftElevatorShaft.Cars.forEach((car)=>{
+            leftCapacity += car.capacity;
+        })
+        capacity = rightCapacity + leftCapacity;
+        this.TotalElevatorCapacity = capacity;
+    }
+
+    //TODO: I could provide capacity info back to the user, instead of just giving them pissed off tenants
+    areElevatorsCrowded(preview: boolean){
+        this.getPopulation(preview);
+        this.getEleveatorTotalCapacity(preview);
+
+        if(this.Population > this.TotalElevatorCapacity){
+            this.ElevatorsAreCrowded = true;
+        }else{
+            this.ElevatorsAreCrowded = false;
+        }
+    }
+
+    //TODO: Spread this value to all tenants
+    calculateGlobalHappiness(preview: boolean){
+        let happiness = 0;
+
+        if(this.ElevatorsAreCrowded){
+            happiness -= 10;
+        }
+
+    }
+
+    calcuateMonthlyIncome(preview: boolean){
+        let startingMoney = this.Money;
+
+        this.Floors.forEach((floor)=>{
+            floor.Rooms.forEach((room)=>{
+                let roomProfit = room.rent -room.maintenanceCost;
+                startingMoney += roomProfit;
+            })
+        })
+
+        if(startingMoney < 0){
+            this.MonthsWithNoMoney++;
+            if(!preview && this.MonthsWithNoMoney >= 3){
+                //lose
+            }
+        }
+        this.Money = startingMoney;
+    }
+
+    calculateStarLevel(preview: boolean){
+        this.getPopulation(preview);
+
+        if(this.Population> 100){
+            this.StarLevel = 2;
+        }
+        if(this.Population> 500){
+            this.StarLevel = 3;
+        }
+        if(this.Population> 1500){
+            this.StarLevel = 4;
+        }
+        if(this.Population> 3000){
+            this.StarLevel = 5;
+        }
     }
 }
 
