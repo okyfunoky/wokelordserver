@@ -1,1 +1,1 @@
-{"version":3,"file":"tenant.js","sourceRoot":"","sources":["../../src/models/tenant.ts"],"names":[],"mappings":";;AAAA,MAAqB,MAAM;IAEvB,YAAY,IAAY;QACpB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACrB,CAAC;IACD,KAAK;QACD,OAAO,GAAG,IAAI,CAAC,IAAI,cAAc,CAAA;IACrC,CAAC;CACJ;AARD,yBAQC"}
+{"version":3,"file":"tenant.js","sourceRoot":"","sources":["../../src/models/tenant.ts"],"names":[],"mappings":";;AAAA,MAAqB,MAAM;IAOvB,YAAY,IAAY;QACpB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACrB,CAAC;IACD,KAAK;QACD,OAAO,GAAG,IAAI,CAAC,IAAI,cAAc,CAAA;IACrC,CAAC;CACJ;AAbD,yBAaC"}

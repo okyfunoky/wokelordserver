@@ -1,6 +1,7 @@
 import Floor from './floor'
 import Tenant from './tenant'
 import ElevatorShaft from './elevetorshaft'
+import ElevatorCar from './elevatorcar';
 
 
 export default class Tower {
@@ -23,6 +24,9 @@ export default class Tower {
         this.Floors = floors.map((floor)=>{
             return new Floor(floor)
         })
+
+        this.testPopulateElevatorCars();
+        this.Money = 500000;
     }
 
     getPopulation(preview: boolean){
@@ -95,19 +99,32 @@ export default class Tower {
     calculateStarLevel(preview: boolean){
         this.getPopulation(preview);
 
-        if(this.Population> 100){
+        if(this.Population > 100){
             this.StarLevel = 2;
         }
-        if(this.Population> 500){
+        if(this.Population > 500){
             this.StarLevel = 3;
         }
-        if(this.Population> 1500){
+        if(this.Population > 1500){
             this.StarLevel = 4;
         }
-        if(this.Population> 3000){
+        if(this.Population > 3000){
             this.StarLevel = 5;
         }
     }
+
+    testPopulateElevatorCars(){
+        this.RightElevatorShaft = new ElevatorShaft("Right","Right");
+        this.LeftElevatorShaft = new ElevatorShaft("Left","Left");
+        this.RightElevatorShaft.Cars = new Array<ElevatorCar>();
+        this.LeftElevatorShaft.Cars = new Array<ElevatorCar>();
+
+        elevatorCars.forEach((number)=>{
+            this.RightElevatorShaft.Cars.push(new ElevatorCar(number.toString(),""))
+            this.LeftElevatorShaft.Cars.push(new ElevatorCar(number.toString(),""))
+        })
+    }
 }
 
-let floors = [1,2,3,4,5,6,7]
+let floors = [1,2,3,4,5,6,7,8,9,10,11,12]
+let elevatorCars = [1,2,3]

@@ -6,5 +6,6 @@ export default class ElevatorCar {
     constructor(name: string, type: string) {
         this.name = name;
         this.type = type;
+        this.capacity = 50
     }
 }
