@@ -8,6 +8,15 @@ class Tower {
             return new floor_1.default(floor);
         });
     }
+    getPopulation() {
+        let population = 0;
+        this.Floors.forEach(floor => {
+            floor.Rooms.forEach((room) => {
+                population += room.Tenants.length;
+            });
+        });
+        this.Population = population;
+    }
 }
 exports.default = Tower;
 let floors = [1, 2, 3, 4, 5, 6, 7];
