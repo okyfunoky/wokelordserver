@@ -83,7 +83,8 @@ function buildRoom(roomType, floorNumber, tower) {
 exports.buildRoom = buildRoom;
 function addRoomToFloor(floor, towerName, room) {
     const filter = { number: floor, towerName: towerName };
-    db.Room.create({ room })
+    console.log("Room to build: " + room);
+    db.Room.create(room)
         .then(function (dbRoom) {
         return db.Floor.findOneAndUpdate(filter, { $push: { rooms: dbRoom._id } }, 
         //returns the new object

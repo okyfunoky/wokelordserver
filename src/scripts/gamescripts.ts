@@ -84,13 +84,13 @@ export function buildRoom(roomType: string, floorNumber: number, tower: Tower) {
   }else{
       console.log("Not enough space");
   }
-  
 }
 
 export function addRoomToFloor(floor: number, towerName: string, room) {
   const filter = {number: floor, towerName: towerName};
+  console.log("Room to build: " + room)
 
-  db.Room.create({ room })
+  db.Room.create(room)
   .then(function(dbRoom) {
     return db.Floor.findOneAndUpdate(
       filter,

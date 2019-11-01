@@ -10,26 +10,27 @@ router.get('/loadtower', function (req, res) {
     res.status(200).send('secretssssssssssssss');
 });
 //TODO: Convert back to post
-router.get('/createtower/:towername', function (req, res) {
+router.post('/createtower/:towername', function (req, res) {
     const towerName = req.params.towername;
     //TODO: Start catching errors here
     game.createTower(towerName);
-    res.status(200).send('secretssssssssssssss');
+    res.status(200).send('Tower created');
 });
 //TODO: Convert back to post
-router.get('/buildroom/:towername/:floor/:room', function (req, res) {
+router.post('/buildroom/:towername/:floor', function (req, res) {
     const towerName = req.params.towername;
     const floor = req.params.floor;
-    const room = req.params.body;
+    const room = req.body;
+    console.log(room);
     game.addRoomToFloor(floor, towerName, room);
-    res.status(200).send('secretssssssssssssss');
+    res.status(200).send('Room Added');
 });
 //TODO: Convert back to post request w/ body
-router.get('/buildfloor/:towername/:floor', function (req, res) {
+router.post('/buildfloor/:towername/:floor', function (req, res) {
     const towerName = req.params.towername;
     const floor = req.params.floor;
     game.addFloorToTower(towerName, floor);
-    res.status(200).send('secretssssssssssssss');
+    res.status(200).send('Floor Added');
 });
 router.get('/tracktenant', function (req, res) {
     res.status(200).send('secretssssssssssssss');
