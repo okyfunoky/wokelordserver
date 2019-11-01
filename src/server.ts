@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use('/', allRoutes);
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/reactreadinglist");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/wokelord");
 
 // Start the API server
 app.listen(PORT, function() {
