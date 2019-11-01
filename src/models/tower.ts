@@ -75,7 +75,6 @@ export default class Tower {
         this.areElevatorsCrowded(preview);
         //other global happiness values go here
 
-
         if(this.ElevatorsAreCrowded){
             globalHappinessAdjustment -= 10;
         }  

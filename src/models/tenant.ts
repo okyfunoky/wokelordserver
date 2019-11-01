@@ -6,6 +6,6 @@ export default class Tenant {
     positiveHappinessFactors: string[];
 
     constructor() {
-        
+        this.currentHappiness = 50;
     }
 }

@@ -124,3 +124,5 @@ buildRoom("office", newTower.Floors.length - 1);
 newTower.getPopulation(true);
 console.log(`${newTower.name} has ${newTower.Floors.length} floors`);
 console.log(`The population of ${newTower.name} is ${newTower.Population}`);
+newTower.calculateGlobalHappiness(true);
+console.log(newTower.GlobalHappiness);
