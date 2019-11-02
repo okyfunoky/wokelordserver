@@ -124,29 +124,15 @@ export function addFloorToTower(towerName: string, floor: number){
       filter,
       { $push: { floors: dbFloor._id } },
       { new: true }
-    );
+    ).populate("floors");
   })
 }
 
 
 export function createTower(towerName: string){
     return db.Tower.create({ name: towerName })
-    // .then(function(dbTower) {
-    //   console.log(dbTower);
-    // })
-    // .catch(function(err) {
-    //   console.log(err);
-    // });
 }
 
 export function getTower(towerName: string){
   return db.Tower.find({ name: towerName }).populate("floors");
-  // .then(function(dbTower) {
-  //   console.log("returning tower...")
-  //   console.log(dbTower)
-  //   return dbTower;
-  // })
-  // .catch(function(err) {
-  //   console.log(err);
-  // });
 }

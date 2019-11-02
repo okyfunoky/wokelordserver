@@ -37,12 +37,13 @@ router.post('/buildroom/:towername/:floor', function (req, res) {
     game.addRoomToFloor(floor, towerName, room);
     res.status(200).send('Room Added');
 });
-//TODO: Convert back to post request w/ body
 router.post('/buildfloor/:towername/:floor', function (req, res) {
-    const towerName = req.params.towername;
-    const floor = req.params.floor;
-    game.addFloorToTower(towerName, floor);
-    res.status(200).send('Floor Added');
+    return __awaiter(this, void 0, void 0, function* () {
+        const towerName = req.params.towername;
+        const floor = req.params.floor;
+        var tower = yield game.addFloorToTower(towerName, floor);
+        res.status(200).json(tower);
+    });
 });
 router.get('/tracktenant', function (req, res) {
     res.status(200).send('secretssssssssssssss');

@@ -37,14 +37,13 @@ router.post('/buildroom/:towername/:floor', function (req: any, res) {
     res.status(200).send('Room Added')
 })
 
-//TODO: Convert back to post request w/ body
 router.post('/buildfloor/:towername/:floor', async function (req: any, res) {
     const towerName = req.params.towername;
     const floor = req.params.floor;
 
-    var newFloor = await game.addFloorToTower(towerName,floor);
+    var tower = await game.addFloorToTower(towerName,floor);
 
-    res.status(200).json(newFloor);
+    res.status(200).json(tower);
 })
 
 router.get('/tracktenant', function (req: any, res) {
