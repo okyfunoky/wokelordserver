@@ -81,20 +81,14 @@ function buildRoom(roomType, floorNumber, tower) {
     }
 }
 exports.buildRoom = buildRoom;
-function addRoomToFloor(floor, towerName, room) {
-    const filter = { number: floor, towerName: towerName };
-    console.log("Room to build: " + room);
-    db.Room.create(room)
+function addRoomToFloor(floorid, towerName, roomName, roomType) {
+    const filter = { _id: floorid, towerName: towerName };
+    console.log("Room to build: " + roomName);
+    return db.Room.create({ name: roomName, type: roomType })
         .then(function (dbRoom) {
         return db.Floor.findOneAndUpdate(filter, { $push: { rooms: dbRoom._id } }, 
         //returns the new object
-        { new: true });
-    })
-        .then(function (dbFloor) {
-        console.log(dbFloor);
-    })
-        .catch(function (err) {
-        console.log(err);
+        { new: true }).populate("rooms");
     });
 }
 exports.addRoomToFloor = addRoomToFloor;

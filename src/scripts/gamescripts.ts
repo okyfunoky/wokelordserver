@@ -86,25 +86,19 @@ export function buildRoom(roomType: string, floorNumber: number, tower: Tower) {
   }
 }
 
-export function addRoomToFloor(floor: number, towerName: string, room) {
-  const filter = {number: floor, towerName: towerName};
-  console.log("Room to build: " + room)
+export function addRoomToFloor(floorid: string, towerName: string, roomName, roomType : string) {
+  const filter = {_id: floorid, towerName: towerName};
+  console.log("Room to build: " + roomName)
 
-  db.Room.create(room)
+  return db.Room.create({name: roomName, type: roomType})
   .then(function(dbRoom) {
     return db.Floor.findOneAndUpdate(
       filter,
       { $push: { rooms: dbRoom._id } },
       //returns the new object
       { new: true }
-    );
+    ).populate("rooms");
   })
-  .then(function(dbFloor) {
-    console.log(dbFloor);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
 }
 
 
