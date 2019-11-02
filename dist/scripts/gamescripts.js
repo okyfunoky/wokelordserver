@@ -120,13 +120,25 @@ function addFloorToTower(towerName, floor) {
 }
 exports.addFloorToTower = addFloorToTower;
 function createTower(towerName) {
-    db.Tower.create({ name: towerName })
-        .then(function (dbTower) {
-        console.log(dbTower);
-    })
-        .catch(function (err) {
-        console.log(err);
-    });
+    return db.Tower.create({ name: towerName });
+    // .then(function(dbTower) {
+    //   console.log(dbTower);
+    // })
+    // .catch(function(err) {
+    //   console.log(err);
+    // });
 }
 exports.createTower = createTower;
+function getTower(towerName) {
+    return db.Tower.find({ name: towerName }).populate("floors");
+    // .then(function(dbTower) {
+    //   console.log("returning tower...")
+    //   console.log(dbTower)
+    //   return dbTower;
+    // })
+    // .catch(function(err) {
+    //   console.log(err);
+    // });
+}
+exports.getTower = getTower;
 //# sourceMappingURL=gamescripts.js.map

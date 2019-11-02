@@ -117,7 +117,7 @@ export function buildFloor(id: number, tower: Tower) {
 
 export function addFloorToTower(towerName: string, floor: number){
   const filter = {name: towerName}
-  db.Floor.create({ number: floor, towerName: towerName })
+  return db.Floor.create({ number: floor, towerName: towerName })
   .then(function(dbFloor) {
     console.log(dbFloor);
     return db.Tower.findOneAndUpdate(
@@ -126,21 +126,27 @@ export function addFloorToTower(towerName: string, floor: number){
       { new: true }
     );
   })
-  .then(function(dbTower) {
-    console.log(dbTower);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
 }
 
 
 export function createTower(towerName: string){
-    db.Tower.create({ name: towerName })
-    .then(function(dbTower) {
-      console.log(dbTower);
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
+    return db.Tower.create({ name: towerName })
+    // .then(function(dbTower) {
+    //   console.log(dbTower);
+    // })
+    // .catch(function(err) {
+    //   console.log(err);
+    // });
+}
+
+export function getTower(towerName: string){
+  return db.Tower.find({ name: towerName }).populate("floors");
+  // .then(function(dbTower) {
+  //   console.log("returning tower...")
+  //   console.log(dbTower)
+  //   return dbTower;
+  // })
+  // .catch(function(err) {
+  //   console.log(err);
+  // });
 }

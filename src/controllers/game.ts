@@ -7,8 +7,11 @@ router.get('/test', function (req: any, res) {
     res.status(200).send('secretssssssssssssss')
 })
 
-router.get('/loadtower', function (req: any, res) {
-    res.status(200).send('secretssssssssssssss')
+router.get('/loadtower/:towername', async function (req: any, res) {
+    let towerName = req.params.towername;
+
+    let tower = await game.getTower(towerName);
+    res.status(200).json(tower);
 })
 
 //TODO: Convert back to post
@@ -35,13 +38,13 @@ router.post('/buildroom/:towername/:floor', function (req: any, res) {
 })
 
 //TODO: Convert back to post request w/ body
-router.post('/buildfloor/:towername/:floor', function (req: any, res) {
+router.post('/buildfloor/:towername/:floor', async function (req: any, res) {
     const towerName = req.params.towername;
     const floor = req.params.floor;
 
-    game.addFloorToTower(towerName,floor);
+    var newFloor = await game.addFloorToTower(towerName,floor);
 
-    res.status(200).send('Floor Added');
+    res.status(200).json(newFloor);
 })
 
 router.get('/tracktenant', function (req: any, res) {

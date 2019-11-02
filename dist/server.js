@@ -8,10 +8,10 @@ const allRoutes = require('./controllers');
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(cors({
-//   origin:["https://rufasa85.github.io","http://localhost:3000"],
-//   credentials:true
-// }));
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true
+}));
 // Static directory
 // app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use('/', allRoutes);
