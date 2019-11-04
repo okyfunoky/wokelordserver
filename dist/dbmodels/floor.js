@@ -7,6 +7,7 @@ let FloorSchema = new Schema({
         type: Number,
     },
     towerName: String,
+    occupiedSpace: Number,
     rooms: [
         {
             type: Schema.Types.ObjectId,

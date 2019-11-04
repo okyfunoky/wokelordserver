@@ -6,14 +6,16 @@ import Floor from "../models/floor";
 import * as mongoose from "mongoose";
 let db = require("../dbmodels");
 
-function buildRoom(roomType: string) {
+async function buildRoom(towerName: string, roomType: string, floorId: string) {
+  console.log("Build room function...")
 
   let roomInfo = {
     cost: 0,
     rent: 0,
     maintenance: 0,
     tenantCount: 0,
-    size: 0
+    size: 0,
+    buildable: false
   };
 
   switch (roomType) {
@@ -68,6 +70,23 @@ function buildRoom(roomType: string) {
       break;
   }
 
+  let floor = await getFloor(floorId);
+  console.log("Build log logging floor")
+  console.log(floor);
+  
+  let newSpace = parseInt(floor[0].occupiedSpace) + roomInfo.size;
+  console.log(newSpace)
+  if(newSpace <= 12){
+    //we can build, allow it.
+    //need $$ calc here, too
+    roomInfo.buildable = true;
+    //update floor in DB with new space
+    
+    await updateFloorSpace(towerName,floorId,newSpace);
+
+  }
+
+
   return roomInfo;
   // let room = new Room("id", roomType, roomInfo.rent, roomInfo.maintenance);
   // room.Tenants = new Array<Tenant>();
@@ -84,35 +103,31 @@ function buildRoom(roomType: string) {
   // }
 }
 
-export function addRoomToFloor(floorid: string, towerName: string, room: any) {
+export async function addRoomToFloor(floorid: string, towerName: string, room: any) {
   const filter = {_id: floorid, towerName: towerName};
   console.log("Room to build: " + room.roomName)
 
-  let parsedRoom = buildRoom(room.roomType);
-  console.log(parsedRoom);
-  
-  return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance})
-  .then(function(dbRoom) {
-    return db.Floor.findOneAndUpdate(
-      filter,
-      { $push: { rooms: dbRoom._id } },
-      //returns the new object
-      { new: true }
-    ).populate("rooms");
-  })
-}
-
-
-export function buildFloor(id: number, tower: Tower) {
-  let newFloor = new Floor(id);
-  tower.Floors.push(newFloor);
-
-  newFloor.Rooms = new Array<Room>();
+  let parsedRoom = await buildRoom(towerName, room.roomType, floorid);
+  console.log("Got parsed room...")
+  if(parsedRoom.buildable){
+    return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance})
+    .then(function(dbRoom) {
+      return db.Floor.findOneAndUpdate(
+        filter,
+        { $push: { rooms: dbRoom._id } },
+        //returns the new object
+        { new: true }
+      ).populate("rooms");
+    })
+  }else{
+    console.log("I've been here...")
+    return false;
+  }
 }
 
 export function addFloorToTower(towerName: string, floor: number){
   const filter = {name: towerName}
-  return db.Floor.create({ number: floor, towerName: towerName })
+  return db.Floor.create({ number: floor, towerName: towerName, occupiedSpace: 0 })
   .then(function(dbFloor) {
     console.log(dbFloor);
     return db.Tower.findOneAndUpdate(
@@ -123,6 +138,10 @@ export function addFloorToTower(towerName: string, floor: number){
   })
 }
 
+export function updateFloorSpace(towerName: string, floorId: string, newSpace: number){
+  const filter = {_id: floorId}
+  return db.Floor.findOneAndUpdate(filter, {occupiedSpace: newSpace});
+}
 
 export function createTower(towerName: string){
     return db.Tower.create({ name: towerName })
@@ -134,4 +153,8 @@ export function getTower(towerName: string){
 
 export function getRoomsForFloor(floorId: string){
   return db.Floor.find({ _id: floorId }).populate("rooms");
+}
+
+export function getFloor(floorId: string){
+  return db.Floor.find({ _id: floorId });
 }
