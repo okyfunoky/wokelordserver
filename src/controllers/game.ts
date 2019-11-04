@@ -14,6 +14,14 @@ router.get('/loadtower/:towername', async function (req: any, res) {
     res.status(200).json(tower);
 })
 
+router.get('/loadrooms/:floorId', async function (req: any, res) {
+    let floorId = req.params.floorId;
+
+    let floor = await game.getRoomsForFloor(floorId);
+    console.log(floor);
+    res.status(200).json(floor);
+})
+
 //TODO: Convert back to post
 router.post('/createtower/:towername', function (req: any, res) {
     const towerName = req.params.towername;
@@ -33,10 +41,10 @@ router.post('/buildroom/:towername/:floorid/:roomName/:roomType', async function
     const roomType = req.params.roomType;
     //console.log(room)
     
-    let room = await game.addRoomToFloor(floorid, towerName, roomName, roomType);
+    let floor = await game.addRoomToFloor(floorid, towerName, roomName, roomType);
+    console.log(floor);
 
-
-    res.status(200).json(room);
+    res.status(200).json(floor);
 })
 
 router.post('/buildfloor/:towername/:floor', async function (req: any, res) {

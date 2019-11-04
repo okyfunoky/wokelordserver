@@ -130,3 +130,7 @@ export function createTower(towerName: string){
 export function getTower(towerName: string){
   return db.Tower.find({ name: towerName }).populate("floors");
 }
+
+export function getRoomsForFloor(floorId: string){
+  return db.Floor.find({ _id: floorId }).populate("rooms");
+}

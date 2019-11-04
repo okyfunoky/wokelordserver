@@ -115,4 +115,8 @@ function getTower(towerName) {
     return db.Tower.find({ name: towerName }).populate("floors");
 }
 exports.getTower = getTower;
+function getRoomsForFloor(floorId) {
+    return db.Floor.find({ _id: floorId }).populate("rooms");
+}
+exports.getRoomsForFloor = getRoomsForFloor;
 //# sourceMappingURL=gamescripts.js.map

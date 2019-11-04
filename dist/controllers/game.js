@@ -21,6 +21,14 @@ router.get('/loadtower/:towername', function (req, res) {
         res.status(200).json(tower);
     });
 });
+router.get('/loadrooms/:floorId', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let floorId = req.params.floorId;
+        let floor = yield game.getRoomsForFloor(floorId);
+        console.log(floor);
+        res.status(200).json(floor);
+    });
+});
 //TODO: Convert back to post
 router.post('/createtower/:towername', function (req, res) {
     const towerName = req.params.towername;
@@ -37,8 +45,9 @@ router.post('/buildroom/:towername/:floorid/:roomName/:roomType', function (req,
         const roomName = req.params.roomName;
         const roomType = req.params.roomType;
         //console.log(room)
-        let room = yield game.addRoomToFloor(floorid, towerName, roomName, roomType);
-        res.status(200).json(room);
+        let floor = yield game.addRoomToFloor(floorid, towerName, roomName, roomType);
+        console.log(floor);
+        res.status(200).json(floor);
     });
 });
 router.post('/buildfloor/:towername/:floor', function (req, res) {
