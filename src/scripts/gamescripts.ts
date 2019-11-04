@@ -6,10 +6,7 @@ import Floor from "../models/floor";
 import * as mongoose from "mongoose";
 let db = require("../dbmodels");
 
-export function buildRoom(roomType: string, floorNumber: number, tower: Tower) {
-  let floorToBuildOn = tower.Floors.find(floor => {
-    return floor.Number === floorNumber;
-  });
+function buildRoom(roomType: string) {
 
   let roomInfo = {
     cost: 0,
@@ -71,26 +68,30 @@ export function buildRoom(roomType: string, floorNumber: number, tower: Tower) {
       break;
   }
 
-  let room = new Room("id", roomType, roomInfo.rent, roomInfo.maintenance);
-  room.Tenants = new Array<Tenant>();
-  for (let index = 0; index < roomInfo.tenantCount; index++) {
-    let newTenant = new Tenant();
-    room.Tenants.push(newTenant);
-  }
-  if(floorToBuildOn.OccupiedSpace + roomInfo.size <= 12){
-    floorToBuildOn.Rooms.push(room);
-    floorToBuildOn.OccupiedSpace += roomInfo.size;
+  return roomInfo;
+  // let room = new Room("id", roomType, roomInfo.rent, roomInfo.maintenance);
+  // room.Tenants = new Array<Tenant>();
+  // for (let index = 0; index < roomInfo.tenantCount; index++) {
+  //   let newTenant = new Tenant();
+  //   room.Tenants.push(newTenant);
+  // }
+  // if(floorToBuildOn.OccupiedSpace + roomInfo.size <= 12){
+  //   floorToBuildOn.Rooms.push(room);
+  //   floorToBuildOn.OccupiedSpace += roomInfo.size;
 
-  }else{
-      console.log("Not enough space");
-  }
+  // }else{
+  //     console.log("Not enough space");
+  // }
 }
 
-export function addRoomToFloor(floorid: string, towerName: string, roomName, roomType : string) {
+export function addRoomToFloor(floorid: string, towerName: string, room: any) {
   const filter = {_id: floorid, towerName: towerName};
-  console.log("Room to build: " + roomName)
+  console.log("Room to build: " + room.roomName)
 
-  return db.Room.create({name: roomName, type: roomType})
+  let parsedRoom = buildRoom(room.roomType);
+  console.log(parsedRoom);
+  
+  return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance})
   .then(function(dbRoom) {
     return db.Floor.findOneAndUpdate(
       filter,

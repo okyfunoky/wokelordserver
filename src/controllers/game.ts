@@ -33,15 +33,13 @@ router.post('/createtower/:towername', function (req: any, res) {
 })
 
 //TODO: Convert back to post
-router.post('/buildroom/:towername/:floorid/:roomName/:roomType', async function (req: any, res) {
+router.post('/buildroom/:towername/:floorid', async function (req: any, res) {
     const towerName = req.params.towername;
     const floorid = req.params.floorid;
-    //const room = req.body;
-    const roomName = req.params.roomName;
-    const roomType = req.params.roomType;
+    const room = req.body;
     //console.log(room)
     
-    let floor = await game.addRoomToFloor(floorid, towerName, roomName, roomType);
+    let floor = await game.addRoomToFloor(floorid, towerName, room);
     console.log(floor);
 
     res.status(200).json(floor);
