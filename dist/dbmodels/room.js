@@ -7,8 +7,8 @@ let RoomSchema = new Schema({
     type: String,
     happiness: Number,
     rent: Number,
-    maintenance: Number
-    //tenants later
+    maintenance: Number,
+    tenants: []
 });
 let Room = mongoose.model("Room", RoomSchema);
 module.exports = Room;

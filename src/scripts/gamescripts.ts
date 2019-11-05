@@ -108,9 +108,12 @@ export async function addRoomToFloor(floorid: string, towerName: string, room: a
   console.log("Room to build: " + room.roomName)
 
   let parsedRoom = await buildRoom(towerName, room.roomType, floorid);
+
+  let tenants = populateTenants(parsedRoom.tenantCount);
+
   console.log("Got parsed room...")
   if(parsedRoom.buildable){
-    return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance})
+    return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance, tenants: tenants})
     .then(function(dbRoom) {
       return db.Floor.findOneAndUpdate(
         filter,
@@ -120,9 +123,20 @@ export async function addRoomToFloor(floorid: string, towerName: string, room: a
       ).populate("rooms");
     })
   }else{
-    console.log("I've been here...")
     return false;
   }
+}
+
+function populateTenants(tenantCount: number){
+  let tenants = [];
+  for (let index = 0; index < tenantCount; index++) {
+    let tenant = {
+      name: "",
+      happiness: 50,
+    }
+    tenants.push(tenant);
+  }
+  return tenants;
 }
 
 export function addFloorToTower(towerName: string, floor: number){

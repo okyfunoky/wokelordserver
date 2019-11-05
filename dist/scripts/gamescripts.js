@@ -103,9 +103,10 @@ function addRoomToFloor(floorid, towerName, room) {
         const filter = { _id: floorid, towerName: towerName };
         console.log("Room to build: " + room.roomName);
         let parsedRoom = yield buildRoom(towerName, room.roomType, floorid);
+        let tenants = populateTenants(parsedRoom.tenantCount);
         console.log("Got parsed room...");
         if (parsedRoom.buildable) {
-            return db.Room.create({ name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance })
+            return db.Room.create({ name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance, tenants: tenants })
                 .then(function (dbRoom) {
                 return db.Floor.findOneAndUpdate(filter, { $push: { rooms: dbRoom._id } }, 
                 //returns the new object
@@ -113,12 +114,22 @@ function addRoomToFloor(floorid, towerName, room) {
             });
         }
         else {
-            console.log("I've been here...");
             return false;
         }
     });
 }
 exports.addRoomToFloor = addRoomToFloor;
+function populateTenants(tenantCount) {
+    let tenants = [];
+    for (let index = 0; index < tenantCount; index++) {
+        let tenant = {
+            name: "",
+            happiness: 50,
+        };
+        tenants.push(tenant);
+    }
+    return tenants;
+}
 function addFloorToTower(towerName, floor) {
     const filter = { name: towerName };
     return db.Floor.create({ number: floor, towerName: towerName, occupiedSpace: 0 })
