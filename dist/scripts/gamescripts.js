@@ -200,4 +200,22 @@ function getTowerMoney(towerName) {
     });
 }
 exports.getTowerMoney = getTowerMoney;
+function calculateIncome(towerName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let tower = yield getTower(towerName);
+        let floors = tower[0].floors;
+        let rent = 0;
+        let maintenance = 0;
+        for (const floor of floors) {
+            let currentFloor = yield getRoomsForFloor(floor._id);
+            for (const room of currentFloor[0].rooms) {
+                rent += room.rent;
+                maintenance += room.maintenance;
+            }
+        }
+        let income = rent + maintenance;
+        let newTower = yield adjustTowerMoney(towerName, income);
+    });
+}
+exports.calculateIncome = calculateIncome;
 //# sourceMappingURL=gamescripts.js.map

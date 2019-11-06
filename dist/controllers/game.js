@@ -28,6 +28,13 @@ router.get('/getpopulation/:towername', function (req, res) {
         res.status(200).json(population);
     });
 });
+router.get('/updatemonth/:towername', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let towerName = req.params.towername;
+        let tower = yield game.calculateIncome(towerName);
+        res.status(200).json(tower);
+    });
+});
 router.get('/getmoney/:towername', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let towerName = req.params.towername;

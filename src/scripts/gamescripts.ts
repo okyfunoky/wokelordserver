@@ -213,3 +213,21 @@ export async function getTowerMoney(towerName: string) {
 
   return money;
 }
+
+export async function calculateIncome(towerName: string) {
+  let tower = await getTower(towerName);
+  let floors = tower[0].floors;
+  let rent = 0;
+  let maintenance = 0;
+
+  for (const floor of floors) {
+    let currentFloor = await getRoomsForFloor(floor._id);
+    for (const room of currentFloor[0].rooms) {
+      rent += room.rent;
+      maintenance += room.maintenance;
+    }
+  }
+
+  let income = rent + maintenance;
+  let newTower = await adjustTowerMoney(towerName, income);
+}

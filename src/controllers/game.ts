@@ -20,6 +20,12 @@ router.get('/getpopulation/:towername', async function (req: any, res) {
     res.status(200).json(population);
 })
 
+router.get('/updatemonth/:towername', async function (req: any, res) {
+    let towerName = req.params.towername;
+    let tower = await game.calculateIncome(towerName);
+    res.status(200).json(tower);
+})
+
 router.get('/getmoney/:towername', async function (req: any, res) {
     let towerName = req.params.towername;
     let money = await game.getTowerMoney(towerName);
