@@ -172,3 +172,17 @@ export function getRoomsForFloor(floorId: string){
 export function getFloor(floorId: string){
   return db.Floor.find({ _id: floorId });
 }
+
+export async function calculatePopulation(towerName: string) {
+    let population = 0;
+    let tower = await getTower(towerName);
+    let floors = tower[0].floors;
+
+    for (const floor of floors) {
+      let currentFloor = await getRoomsForFloor(floor._id);
+      for (const room of currentFloor[0].rooms) {
+        population += room.tenants.length;
+      }
+    }
+    return population;
+}

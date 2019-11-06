@@ -14,6 +14,12 @@ router.get('/loadtower/:towername', async function (req: any, res) {
     res.status(200).json(tower);
 })
 
+router.get('/getpopulation/:towername', async function (req: any, res) {
+    let towerName = req.params.towername;
+    let population = await game.calculatePopulation(towerName);
+    res.status(200).json(population);
+})
+
 router.get('/loadrooms/:floorId', async function (req: any, res) {
     let floorId = req.params.floorId;
 
