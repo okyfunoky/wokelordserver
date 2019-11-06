@@ -12,7 +12,8 @@ let TowerSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Floor"
         }
-    ]
+    ],
+    money: Number
 })
 
 let Tower = mongoose.model("Tower", TowerSchema);

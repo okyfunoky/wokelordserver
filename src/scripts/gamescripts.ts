@@ -6,6 +6,8 @@ import Floor from "../models/floor";
 import * as mongoose from "mongoose";
 let db = require("../dbmodels");
 
+const floorCost = -100000;
+
 async function buildRoom(towerName: string, roomType: string, floorId: string) {
   console.log("Build room function...")
 
@@ -20,51 +22,51 @@ async function buildRoom(towerName: string, roomType: string, floorId: string) {
 
   switch (roomType) {
     case "apartment":
-      roomInfo.cost = 1000;
+      roomInfo.cost = -1000;
       roomInfo.rent = 800;
-      roomInfo.maintenance = 200;
+      roomInfo.maintenance = -200;
       roomInfo.tenantCount = 3;
       roomInfo.size = 2;
       break;
     case "office":
-      roomInfo.cost = 2000;
+      roomInfo.cost = -2000;
       roomInfo.rent = 1600;
-      roomInfo.maintenance = 400;
+      roomInfo.maintenance = -400;
       roomInfo.tenantCount = 8;
       roomInfo.size = 3;
       break;
     case "restaurant":
-      roomInfo.cost = 5000;
+      roomInfo.cost = -5000;
       roomInfo.rent = 2500;
-      roomInfo.maintenance = 500;
+      roomInfo.maintenance = -500;
       roomInfo.tenantCount = 4;
       roomInfo.size = 6;
       break;
     case "condo":
-      roomInfo.cost = 5000;
+      roomInfo.cost = -5000;
       roomInfo.rent = 300; //condo rents are different, its more of dues
-      roomInfo.maintenance = 100;
+      roomInfo.maintenance = -100;
       roomInfo.tenantCount = 4;
       roomInfo.size = 4;
       break;
     case "entertainment":
-      roomInfo.cost = 10000;
+      roomInfo.cost = -10000;
       roomInfo.rent = 4500;
-      roomInfo.maintenance = 1200;
+      roomInfo.maintenance = -1200;
       roomInfo.tenantCount = 5;
       roomInfo.size = 6;
       break;
     case "retail":
-      roomInfo.cost = 5000;
+      roomInfo.cost = -5000;
       roomInfo.rent = 2500;
-      roomInfo.maintenance = 800;
+      roomInfo.maintenance = -800;
       roomInfo.tenantCount = 3;
       roomInfo.size = 4;
       break;
     case "hotel":
-      roomInfo.cost = 2500;
+      roomInfo.cost = -2500;
       roomInfo.rent = 1800;
-      roomInfo.maintenance = 1000;
+      roomInfo.maintenance = -1000;
       roomInfo.tenantCount = 1;
       roomInfo.size = 1;
       break;
@@ -113,6 +115,7 @@ export async function addRoomToFloor(floorid: string, towerName: string, room: a
 
   console.log("Got parsed room...")
   if(parsedRoom.buildable){
+    let newTower = await adjustTowerMoney(towerName,parsedRoom.cost);
     return db.Room.create({name: room.roomName, type: room.roomType, happiness: room.happiness, rent: parsedRoom.rent, maintenance: parsedRoom.maintenance, tenants: tenants})
     .then(function(dbRoom) {
       return db.Floor.findOneAndUpdate(
@@ -127,6 +130,20 @@ export async function addRoomToFloor(floorid: string, towerName: string, room: a
   }
 }
 
+export async function adjustTowerMoney(towerName: string, adjustment){
+  let filter = { name: towerName };
+  let tower = await getTower(towerName);
+  console.log(tower);
+  let newValue = tower[0].money + adjustment;
+
+  let update = await db.Tower.findOneAndUpdate(
+    filter,
+    { money: newValue},
+    { new: true }
+  );
+  return update;
+}
+
 function populateTenants(tenantCount: number){
   let tenants = [];
   for (let index = 0; index < tenantCount; index++) {
@@ -139,8 +156,9 @@ function populateTenants(tenantCount: number){
   return tenants;
 }
 
-export function addFloorToTower(towerName: string, floor: number){
+export async function addFloorToTower(towerName: string, floor: number){
   const filter = {name: towerName}
+  let newTower = await adjustTowerMoney(towerName,floorCost);
   return db.Floor.create({ number: floor, towerName: towerName, occupiedSpace: 0 })
   .then(function(dbFloor) {
     console.log(dbFloor);
@@ -158,10 +176,11 @@ export function updateFloorSpace(towerName: string, floorId: string, newSpace: n
 }
 
 export function createTower(towerName: string){
-    return db.Tower.create({ name: towerName })
+    return db.Tower.create({ name: towerName, money: 10000000 })
 }
 
 export function getTower(towerName: string){
+  console.log("Getting..." + towerName);
   return db.Tower.find({ name: towerName }).populate("floors");
 }
 
@@ -185,4 +204,12 @@ export async function calculatePopulation(towerName: string) {
       }
     }
     return population;
+}
+
+export async function getTowerMoney(towerName: string) {
+  let tower = await getTower(towerName);
+
+  let money = tower[0].money;
+
+  return money;
 }

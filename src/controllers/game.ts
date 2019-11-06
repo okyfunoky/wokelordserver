@@ -20,6 +20,12 @@ router.get('/getpopulation/:towername', async function (req: any, res) {
     res.status(200).json(population);
 })
 
+router.get('/getmoney/:towername', async function (req: any, res) {
+    let towerName = req.params.towername;
+    let money = await game.getTowerMoney(towerName);
+    res.status(200).json(money);
+})
+
 router.get('/loadrooms/:floorId', async function (req: any, res) {
     let floorId = req.params.floorId;
 
@@ -36,6 +42,18 @@ router.post('/createtower/:towername', function (req: any, res) {
     game.createTower(towerName);
 
     res.status(200).send('Tower created')
+})
+
+router.post('/updatetowermoney/:towername/:adjustment', async function (req: any, res) {
+    console.log("Towername:" + req.params.towername);
+    console.log("Adjust:" + req.params.adjustment);
+    const towerName = req.params.towername;
+    const adjustment = parseInt(req.params.adjustment);
+
+    //TODO: Start catching errors here
+    let tower = await game.adjustTowerMoney(towerName, adjustment);
+
+    res.status(200).json(tower);
 })
 
 //TODO: Convert back to post

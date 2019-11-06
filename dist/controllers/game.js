@@ -1,10 +1,9 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -29,6 +28,13 @@ router.get('/getpopulation/:towername', function (req, res) {
         res.status(200).json(population);
     });
 });
+router.get('/getmoney/:towername', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let towerName = req.params.towername;
+        let money = yield game.getTowerMoney(towerName);
+        res.status(200).json(money);
+    });
+});
 router.get('/loadrooms/:floorId', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let floorId = req.params.floorId;
@@ -43,6 +49,17 @@ router.post('/createtower/:towername', function (req, res) {
     //TODO: Start catching errors here
     game.createTower(towerName);
     res.status(200).send('Tower created');
+});
+router.post('/updatetowermoney/:towername/:adjustment', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("Towername:" + req.params.towername);
+        console.log("Adjust:" + req.params.adjustment);
+        const towerName = req.params.towername;
+        const adjustment = parseInt(req.params.adjustment);
+        //TODO: Start catching errors here
+        let tower = yield game.adjustTowerMoney(towerName, adjustment);
+        res.status(200).json(tower);
+    });
 });
 //TODO: Convert back to post
 router.post('/buildroom/:towername/:floorid', function (req, res) {
