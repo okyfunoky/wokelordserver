@@ -9,8 +9,9 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors({
   origin:["https://okyfunoky.github.io/wokelordclient/"],
-  credentials:false
+  credentials:true
 }));
+app.options('*', cors())
 
 const allRoutes = require('./controllers');
 
