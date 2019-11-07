@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cors({
-  origin:["https://okyfunoky.github.io/wokelordclient"],
+  origin:["https://okyfunoky.github.io/wokelordclient/"],
   credentials:true
 }));
 
