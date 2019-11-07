@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin:["https://okyfunoky.github.io/wokelordclient/"],
+  origin:['*'],
   credentials:true
 }));
 app.options('*', cors())
