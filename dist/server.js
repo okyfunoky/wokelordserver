@@ -9,7 +9,7 @@ const allRoutes = require('./controllers');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://okyfunoky.github.io/wokelordclient"],
     credentials: true
 }));
 // Static directory
