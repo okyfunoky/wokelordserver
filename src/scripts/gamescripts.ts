@@ -1,9 +1,3 @@
-import Tower from "../models/tower";
-import Room from "../models/room";
-import Tenant from "../models/tenant";
-import Floor from "../models/floor";
-
-import * as mongoose from "mongoose";
 let db = require("../dbmodels");
 
 const floorCost = -100000;
@@ -90,19 +84,6 @@ async function buildRoom(towerName: string, roomType: string, floorId: string) {
 
 
   return roomInfo;
-  // let room = new Room("id", roomType, roomInfo.rent, roomInfo.maintenance);
-  // room.Tenants = new Array<Tenant>();
-  // for (let index = 0; index < roomInfo.tenantCount; index++) {
-  //   let newTenant = new Tenant();
-  //   room.Tenants.push(newTenant);
-  // }
-  // if(floorToBuildOn.OccupiedSpace + roomInfo.size <= 12){
-  //   floorToBuildOn.Rooms.push(room);
-  //   floorToBuildOn.OccupiedSpace += roomInfo.size;
-
-  // }else{
-  //     console.log("Not enough space");
-  // }
 }
 
 export async function addRoomToFloor(floorid: string, towerName: string, room: any) {
