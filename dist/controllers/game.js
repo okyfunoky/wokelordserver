@@ -86,6 +86,12 @@ router.post('/buildfloor/:towername/:floor', function (req, res) {
         res.status(200).json(tower);
     });
 });
+router.get('/loadtowers', function (req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let towers = yield game.loadTowers();
+        res.status(200).json(towers);
+    });
+});
 router.get('/tracktenant', function (req, res) {
     res.status(200).send('secretssssssssssssss');
 });

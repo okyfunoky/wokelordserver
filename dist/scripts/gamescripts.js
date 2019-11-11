@@ -27,7 +27,7 @@ function buildRoom(towerName, roomType, floorId) {
                 roomInfo.rent = 800;
                 roomInfo.maintenance = -200;
                 roomInfo.tenantCount = 3;
-                roomInfo.size = 2;
+                roomInfo.size = 3;
                 break;
             case "office":
                 roomInfo.cost = -2000;
@@ -44,7 +44,7 @@ function buildRoom(towerName, roomType, floorId) {
                 roomInfo.size = 6;
                 break;
             case "condo":
-                roomInfo.cost = -5000;
+                roomInfo.cost = -500;
                 roomInfo.rent = 300; //condo rents are different, its more of dues
                 roomInfo.maintenance = -100;
                 roomInfo.tenantCount = 4;
@@ -85,18 +85,6 @@ function buildRoom(towerName, roomType, floorId) {
             yield updateFloorSpace(towerName, floorId, newSpace);
         }
         return roomInfo;
-        // let room = new Room("id", roomType, roomInfo.rent, roomInfo.maintenance);
-        // room.Tenants = new Array<Tenant>();
-        // for (let index = 0; index < roomInfo.tenantCount; index++) {
-        //   let newTenant = new Tenant();
-        //   room.Tenants.push(newTenant);
-        // }
-        // if(floorToBuildOn.OccupiedSpace + roomInfo.size <= 12){
-        //   floorToBuildOn.Rooms.push(room);
-        //   floorToBuildOn.OccupiedSpace += roomInfo.size;
-        // }else{
-        //     console.log("Not enough space");
-        // }
     });
 }
 function addRoomToFloor(floorid, towerName, room) {
@@ -173,6 +161,10 @@ function getRoomsForFloor(floorId) {
     return db.Floor.find({ _id: floorId }).populate("rooms");
 }
 exports.getRoomsForFloor = getRoomsForFloor;
+function loadTowers() {
+    return db.Tower.find({});
+}
+exports.loadTowers = loadTowers;
 function getFloor(floorId) {
     return db.Floor.find({ _id: floorId });
 }

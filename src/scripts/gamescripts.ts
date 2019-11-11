@@ -20,7 +20,7 @@ async function buildRoom(towerName: string, roomType: string, floorId: string) {
       roomInfo.rent = 800;
       roomInfo.maintenance = -200;
       roomInfo.tenantCount = 3;
-      roomInfo.size = 2;
+      roomInfo.size = 3;
       break;
     case "office":
       roomInfo.cost = -2000;
@@ -37,7 +37,7 @@ async function buildRoom(towerName: string, roomType: string, floorId: string) {
       roomInfo.size = 6;
       break;
     case "condo":
-      roomInfo.cost = -5000;
+      roomInfo.cost = -500;
       roomInfo.rent = 300; //condo rents are different, its more of dues
       roomInfo.maintenance = -100;
       roomInfo.tenantCount = 4;
@@ -167,6 +167,10 @@ export function getTower(towerName: string){
 
 export function getRoomsForFloor(floorId: string){
   return db.Floor.find({ _id: floorId }).populate("rooms");
+}
+
+export function loadTowers(){
+  return db.Tower.find({});
 }
 
 export function getFloor(floorId: string){

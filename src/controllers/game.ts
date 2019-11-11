@@ -81,6 +81,11 @@ router.post('/buildfloor/:towername/:floor', async function (req: any, res) {
     res.status(200).json(tower);
 })
 
+router.get('/loadtowers', async function (req: any, res) {
+    let towers = await game.loadTowers();
+    res.status(200).json(towers);
+})
+
 router.get('/tracktenant', function (req: any, res) {
     res.status(200).send('secretssssssssssssss')
 })

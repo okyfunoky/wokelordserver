@@ -4,14 +4,12 @@ const session = require("express-session");
 const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3001;
+app.use(cors());
+//app.options('*', cors())
 const allRoutes = require('./controllers');
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({
-    origin: ["https://okyfunoky.github.io/wokelordclient"],
-    credentials: true
-}));
 // Static directory
 // app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use('/', allRoutes);
